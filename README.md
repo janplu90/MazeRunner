@@ -13,5 +13,6 @@ Game about escaping from the maze, implemented in Unity3D
   - Length scale Free
   - Object is Desert_Temple_SegmentSingle
   - Remember to add Box Collider
+  - Remember to turn off Cast Shadows and unmark Receive Shadows
 * Ceiling
   - Same as the ground but rotated 
