@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/JanekMaze2Construction.unity
+- path: Assets/Janek.unity
   isLoaded: 1
   isActive: 1
