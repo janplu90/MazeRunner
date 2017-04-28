@@ -9,7 +9,7 @@ Game about escaping from the maze, implemented in Unity3D
   - Large size scale 4x4x4
 * Walls
   - Thickness scale X = 0.25
-  - Height scale Y = 1
+  - Height scale Y = 1.5 (if it is 1 then head of our character is in ceiling and we can see through it)
   - Length scale Free
   - Object is Desert_Temple_SegmentSingle
   - Remember to add Box Collider
