@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
@@ -42,6 +43,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+		public Slider waterBarSlider;
+		private float waterValue;
+		private bool touch;
+		private bool collisionCounter;
+		private int hinduCount;
+		public Text hinduAmount;
+		private int stoneCount;
+		public Text stoneAmount;
+
         // Use this for initialization
         private void Start()
         {
@@ -55,6 +65,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+			waterValue = 0f;
+			waterBarSlider.value = waterValue;
+			touch = false;
+			collisionCounter = true;
+			hinduCount = 0;
+			hinduAmount.text = hinduCount.ToString();
+			stoneCount = 0;
+			stoneAmount.text = stoneCount.ToString();
         }
 
 
@@ -81,6 +99,24 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+			if (IsInMaze())
+				waterValue += .001f;
+
+			waterBarSlider.value = waterValue;
+
+			if (Input.GetKeyDown (KeyCode.Q))
+			{
+				hinduCount -= 1;
+				hinduAmount.text = hinduCount.ToString();
+			}
+
+			if (Input.GetKeyDown (KeyCode.E))
+			{
+				stoneCount -= 1;
+				stoneAmount.text = stoneCount.ToString();
+			}
+				
         }
 
 
@@ -259,14 +295,57 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		void OnTriggerEnter(Collider other)
 		{
 
-			if (other.gameObject.CompareTag ("Sand")) {
-				 other.gameObject.SetActive (false);
-//				if (touch == false)
-//					touch = true;
-//				else
-//					touch = false;
+			if (other.gameObject.CompareTag ("Entry"))
+			{
+				//	other.gameObject.SetActive (false);
+				if (collisionCounter)
+				{
+					if (touch == false)
+						touch = true;
+					else
+					{
+						touch = false;
+						waterValue = 0f;
+					}
+					collisionCounter = false;
+				} else 
+				{
+					collisionCounter = true;
+				}
+
 
 			}
+
+
+			if (other.gameObject.CompareTag ("Hindu"))
+			{
+				other.gameObject.SetActive (false);
+				hinduCount += 1;
+				hinduAmount.text = hinduCount.ToString();
+			}
+
+			if (other.gameObject.CompareTag ("Stone"))
+			{
+				other.gameObject.SetActive (false);
+				stoneCount += 1;
+				stoneAmount.text = stoneCount.ToString();
+			}
+				
+
 		}
+
+		bool IsInMaze()
+		{
+			if (touch)
+				return true;
+			else
+				return false;
+		}
+	
+	
+	}
+
+
+
     }
-}
+
